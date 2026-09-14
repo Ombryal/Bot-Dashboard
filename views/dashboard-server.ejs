@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><%= guild.name %> - Zangetsu Bot</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+	<div class="topbar">
+		<a class="back-link" href="/dashboard">&larr; Servers</a>
+
+		<div class="profile-menu">
+			<button class="profile-avatar-btn" id="profileBtn" type="button">
+				<img src="<%= avatarUrl %>" alt="Your avatar" class="profile-avatar">
+			</button>
+			<div class="profile-dropdown" id="profileDropdown">
+				<div class="profile-dropdown-name"><%= user.username %></div>
+				<a href="/logout" class="profile-dropdown-logout">Log out</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="hub-container">
+		<div class="hub-logo-wrap">
+			<img src="/logo.png" alt="Zangetsu" class="hub-logo">
+		</div>
+
+		<h1 class="hub-title"><%= guild.name %></h1>
+		<p class="hub-subtitle">Toggle which systems are active on this server</p>
+
+		<div class="category-row">
+			<div class="category-card" data-category="mod_enabled">
+				<div class="category-icon">🛡️</div>
+				<div class="category-name">Moderation</div>
+				<label class="switch">
+					<input type="checkbox" class="toggle-input" <%= settings.mod_enabled ? 'checked' : '' %>>
+					<span class="slider"></span>
+				</label>
+			</div>
+
+			<div class="category-card" data-category="leveling_enabled">
+				<div class="category-icon">📈</div>
+				<div class="category-name">Leveling</div>
+				<label class="switch">
+					<input type="checkbox" class="toggle-input" <%= settings.leveling_enabled ? 'checked' : '' %>>
+					<span class="slider"></span>
+				</label>
+			</div>
+
+			<div class="category-card" data-category="logging_enabled">
+				<div class="category-icon">📝</div>
+				<div class="category-name">Logging</div>
+				<label class="switch">
+					<input type="checkbox" class="toggle-input" <%= settings.logging_enabled ? 'checked' : '' %>>
+					<span class="slider"></span>
+				</label>
+			</div>
+
+			<div class="category-card" data-category="utility_enabled">
+				<div class="category-icon">🔧</div>
+				<div class="category-name">Utility</div>
+				<label class="switch">
+					<input type="checkbox" class="toggle-input" <%= settings.utility_enabled ? 'checked' : '' %>>
+					<span class="slider"></span>
+				</label>
+			</div>
+		</div>
+
+		<p class="hub-note">Detailed settings for each category are coming soon — for now you can enable or disable them here.</p>
+	</div>
+
+	<script>
+		// opening/closing the little profile dropdown
+		const profileBtn = document.getElementById('profileBtn');
+		const dropdown = document.getElementById('profileDropdown');
+
+		profileBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			dropdown.classList.toggle('open');
+		});
+
+		// clicking anywhere else closes it
+		document.addEventListener('click', () => {
+			dropdown.classList.remove('open');
+		});
+
+		// each toggle just quietly pings the server in the background and flips itself
+		// based on the real result - no page reload needed
+		document.querySelectorAll('.category-card').forEach(card => {
+			const category = card.dataset.category;
+			const input = card.querySelector('.toggle-input');
+
+			input.addEventListener('click', async (e) => {
+				e.stopPropagation();
+
+				try {
+					const response = await fetch(window.location.pathname + '/toggle', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ category }),
+					});
+					const data = await response.json();
+					input.checked = !!data.value;
+				} catch (error) {
+					// something went wrong reaching the server, just put the switch back how it was
+					input.checked = !input.checked;
+				}
+			});
+		});
+	</script>
+</body>
+</html>
