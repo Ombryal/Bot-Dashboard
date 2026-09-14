@@ -1,0 +1,9 @@
+# stuff we don't want in the repo
+
+node_modules/
+.env
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
