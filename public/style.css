@@ -1,63 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
 * {
 	box-sizing: border-box;
 }
 
-body {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	background: #1e1f22;
-	color: #f2f3f5;
-	margin: 0;
-	padding: 24px;
+:root {
+	--blood: #8a0d1a;
+	--blood-bright: #c81f2e;
+	--blood-glow: rgba(200, 31, 46, 0.45);
+	--bg-void: #0a0505;
+	--bg-panel: #150a0b;
+	--bg-panel-raised: #1d0f10;
+	--border-dim: #3a1518;
+	--text-main: #f3e6e6;
+	--text-dim: #a48a8a;
 }
 
-.container, .login-box {
-	max-width: 480px;
-	margin: 0 auto;
+body {
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+	background: var(--bg-void);
+	background-image: radial-gradient(circle at 50% 0%, #1a0808 0%, var(--bg-void) 60%);
+	color: var(--text-main);
+	margin: 0;
+	padding: 24px;
+	min-height: 100vh;
+}
+
+/* ===== login page ===== */
+
+.login-body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 0;
+	overflow: hidden;
+	position: relative;
+}
+
+#embers {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
 }
 
 .login-box {
+	position: relative;
+	z-index: 1;
 	text-align: center;
-	margin-top: 80px;
+	padding: 48px 40px;
+	background: rgba(21, 10, 11, 0.75);
+	border: 1px solid var(--border-dim);
+	border-radius: 16px;
+	backdrop-filter: blur(6px);
+	box-shadow: 0 0 60px var(--blood-glow);
+	animation: rise 0.9s ease-out;
 }
 
-a {
-	color: #5865f2;
+@keyframes rise {
+	from { opacity: 0; transform: translateY(24px); }
+	to { opacity: 1; transform: translateY(0); }
 }
 
-h1 {
-	margin-bottom: 4px;
+.crest {
+	font-size: 42px;
+	color: var(--blood-bright);
+	text-shadow: 0 0 20px var(--blood-glow);
+	margin-bottom: 8px;
+	animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+	0%, 100% { text-shadow: 0 0 20px var(--blood-glow); }
+	50% { text-shadow: 0 0 36px var(--blood-bright); }
+}
+
+.brand-title {
+	font-family: 'Cinzel', serif;
+	font-size: 34px;
+	letter-spacing: 8px;
+	margin: 0;
+	background: linear-gradient(180deg, #ffffff 0%, var(--blood-bright) 120%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.brand-subtitle {
+	color: var(--text-dim);
+	font-size: 13px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	margin: 6px 0 32px;
 }
 
 .discord-button {
-	display: inline-block;
-	background: #5865f2;
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, var(--blood-bright), var(--blood));
 	color: white;
 	text-decoration: none;
-	padding: 12px 24px;
-	border-radius: 8px;
-	margin-top: 16px;
+	padding: 14px 32px;
+	border-radius: 10px;
 	font-weight: 600;
+	letter-spacing: 0.5px;
+	overflow: hidden;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	box-shadow: 0 4px 20px var(--blood-glow);
+}
+
+.discord-button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 28px var(--blood-glow);
+}
+
+.discord-button::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -75%;
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+	transform: skewX(-20deg);
+	animation: shine 3.5s ease-in-out infinite;
+}
+
+@keyframes shine {
+	0% { left: -75%; }
+	40% { left: 130%; }
+	100% { left: 130%; }
+}
+
+/* ===== dashboard pages ===== */
+
+.container {
+	max-width: 560px;
+	margin: 0 auto;
+}
+
+.page-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+}
+
+h1 {
+	font-family: 'Cinzel', serif;
+	letter-spacing: 1px;
+	margin-bottom: 4px;
+	color: var(--text-main);
+}
+
+a {
+	color: var(--blood-bright);
+}
+
+.back-link, .logout-link {
+	color: var(--text-dim);
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.back-link:hover, .logout-link:hover {
+	color: var(--blood-bright);
+}
+
+.empty-state {
+	color: var(--text-dim);
+	line-height: 1.6;
 }
 
 .guild-list {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 10px;
 	margin-top: 16px;
 }
 
 .guild-card {
-	display: block;
-	background: #2b2d31;
-	padding: 14px 16px;
-	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: var(--bg-panel);
+	border: 1px solid var(--border-dim);
+	padding: 16px 18px;
+	border-radius: 10px;
 	text-decoration: none;
-	color: #f2f3f5;
+	color: var(--text-main);
 	font-weight: 600;
+	transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
 }
 
 .guild-card:hover {
-	background: #35373c;
+	background: var(--bg-panel-raised);
+	border-color: var(--blood-bright);
+	transform: translateX(4px);
+}
+
+.guild-arrow {
+	color: var(--blood-bright);
 }
 
 form {
@@ -65,42 +213,62 @@ form {
 	flex-direction: column;
 	gap: 6px;
 	margin-top: 24px;
+	background: var(--bg-panel);
+	border: 1px solid var(--border-dim);
+	padding: 24px;
+	border-radius: 12px;
 }
 
 label {
 	font-weight: 600;
 	margin-top: 16px;
+	color: var(--text-main);
 }
 
 .hint {
 	font-size: 13px;
-	color: #949ba4;
+	color: var(--text-dim);
 	margin: 0 0 4px 0;
 }
 
 input, select {
-	background: #2b2d31;
-	border: 1px solid #3f4147;
-	color: #f2f3f5;
-	padding: 10px;
+	background: var(--bg-void);
+	border: 1px solid var(--border-dim);
+	color: var(--text-main);
+	padding: 10px 12px;
 	border-radius: 6px;
 	font-size: 14px;
+}
+
+input:focus, select:focus {
+	outline: none;
+	border-color: var(--blood-bright);
+	box-shadow: 0 0 0 3px var(--blood-glow);
 }
 
 button {
 	margin-top: 24px;
-	background: #5865f2;
+	background: linear-gradient(135deg, var(--blood-bright), var(--blood));
 	color: white;
 	border: none;
-	padding: 12px;
-	border-radius: 6px;
+	padding: 13px;
+	border-radius: 8px;
 	font-weight: 600;
 	font-size: 14px;
+	letter-spacing: 0.5px;
 	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px var(--blood-glow);
 }
 
 .success-banner {
-	background: #23a55a;
+	background: rgba(200, 31, 46, 0.15);
+	border: 1px solid var(--blood-bright);
+	color: var(--text-main);
 	padding: 10px 14px;
 	border-radius: 6px;
 	font-weight: 600;
