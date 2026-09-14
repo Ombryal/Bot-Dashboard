@@ -13,10 +13,26 @@ router.get('/login', (req, res) => {
 router.get('/auth/discord', passport.authenticate('discord'));
 
 // discord sends them back here after they approve the login
-router.get('/auth/discord/callback', passport.authenticate('discord', {
-	failureRedirect: '/login',
-}), (req, res) => {
-	res.redirect('/dashboard');
+// doing this manually (instead of the one-liner passport.authenticate with failureRedirect)
+// so that if login fails, we can actually see WHY in the logs instead of it failing silently
+router.get('/auth/discord/callback', (req, res, next) => {
+	passport.authenticate('discord', (err, user, info) => {
+		if (err) {
+			console.error('Discord auth threw an error:', err);
+			return res.redirect('/login');
+		}
+		if (!user) {
+			console.error('Discord auth failed, info:', info);
+			return res.redirect('/login');
+		}
+		req.logIn(user, (loginErr) => {
+			if (loginErr) {
+				console.error('req.logIn failed:', loginErr);
+				return res.redirect('/login');
+			}
+			return res.redirect('/dashboard');
+		});
+	})(req, res, next);
 });
 
 router.get('/logout', (req, res) => {
