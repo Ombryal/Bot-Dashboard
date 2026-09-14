@@ -1,0 +1,107 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	background: #1e1f22;
+	color: #f2f3f5;
+	margin: 0;
+	padding: 24px;
+}
+
+.container, .login-box {
+	max-width: 480px;
+	margin: 0 auto;
+}
+
+.login-box {
+	text-align: center;
+	margin-top: 80px;
+}
+
+a {
+	color: #5865f2;
+}
+
+h1 {
+	margin-bottom: 4px;
+}
+
+.discord-button {
+	display: inline-block;
+	background: #5865f2;
+	color: white;
+	text-decoration: none;
+	padding: 12px 24px;
+	border-radius: 8px;
+	margin-top: 16px;
+	font-weight: 600;
+}
+
+.guild-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-top: 16px;
+}
+
+.guild-card {
+	display: block;
+	background: #2b2d31;
+	padding: 14px 16px;
+	border-radius: 8px;
+	text-decoration: none;
+	color: #f2f3f5;
+	font-weight: 600;
+}
+
+.guild-card:hover {
+	background: #35373c;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 24px;
+}
+
+label {
+	font-weight: 600;
+	margin-top: 16px;
+}
+
+.hint {
+	font-size: 13px;
+	color: #949ba4;
+	margin: 0 0 4px 0;
+}
+
+input, select {
+	background: #2b2d31;
+	border: 1px solid #3f4147;
+	color: #f2f3f5;
+	padding: 10px;
+	border-radius: 6px;
+	font-size: 14px;
+}
+
+button {
+	margin-top: 24px;
+	background: #5865f2;
+	color: white;
+	border: none;
+	padding: 12px;
+	border-radius: 6px;
+	font-weight: 600;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.success-banner {
+	background: #23a55a;
+	padding: 10px 14px;
+	border-radius: 6px;
+	font-weight: 600;
+}
