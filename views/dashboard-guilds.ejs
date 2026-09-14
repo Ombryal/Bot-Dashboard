@@ -3,21 +3,24 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Your servers - Zangetsu-bot</title>
+	<title>Your servers - Zangetsu Bot</title>
 	<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 	<div class="container">
-		<h1>Pick a server</h1>
-		<p><a href="/logout">Log out</a></p>
+		<div class="page-header">
+			<h1>Select a Server</h1>
+			<a class="logout-link" href="/logout">Log out</a>
+		</div>
 
 		<% if (guilds.length === 0) { %>
-			<p>You're not an admin/mod in any servers I can see. Make sure Zangetsu-bot is invited to the server you want to manage.</p>
+			<p class="empty-state">You're not an admin/mod in any servers I can see. Make sure Zangetsu Bot is invited to the server you want to manage.</p>
 		<% } else { %>
 			<div class="guild-list">
 				<% guilds.forEach(guild => { %>
 					<a class="guild-card" href="/dashboard/<%= guild.id %>">
-						<%= guild.name %>
+						<span class="guild-name"><%= guild.name %></span>
+						<span class="guild-arrow">&rarr;</span>
 					</a>
 				<% }) %>
 			</div>
