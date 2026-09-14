@@ -3,14 +3,66 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Bot dashboard</title>
+	<title>Zangetsu Bot</title>
 	<link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="login-body">
+	<canvas id="embers"></canvas>
+
 	<div class="login-box">
-		<h1>Zangetsu-bot</h1>
-		<p>Sign in to manage your server's settings.</p>
-		<a class="discord-button" href="/auth/discord">Login with Discord</a>
+		<div class="crest">獄</div>
+		<h1 class="brand-title">ZANGETSU</h1>
+		<p class="brand-subtitle">Server Command Dashboard</p>
+		<a class="discord-button" href="/auth/discord">
+			<span>Login with Discord</span>
+		</a>
 	</div>
+
+	<script>
+		// tiny drifting ember particle effect, nothing fancy, just floating specks
+		// rising up the screen to sell the "dark/blood" mood on the login page
+		const canvas = document.getElementById('embers');
+		const ctx = canvas.getContext('2d');
+
+		function resize() {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		}
+		resize();
+		window.addEventListener('resize', resize);
+
+		const embers = Array.from({ length: 60 }, () => ({
+			x: Math.random() * canvas.width,
+			y: Math.random() * canvas.height,
+			radius: Math.random() * 2 + 0.5,
+			speed: Math.random() * 0.6 + 0.2,
+			drift: Math.random() * 0.6 - 0.3,
+			glow: Math.random() * 0.5 + 0.3,
+		}));
+
+		function animate() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			for (const ember of embers) {
+				ember.y -= ember.speed;
+				ember.x += ember.drift;
+
+				if (ember.y < -10) {
+					ember.y = canvas.height + 10;
+					ember.x = Math.random() * canvas.width;
+				}
+
+				ctx.beginPath();
+				ctx.arc(ember.x, ember.y, ember.radius, 0, Math.PI * 2);
+				ctx.fillStyle = `rgba(180, 20, 30, ${ember.glow})`;
+				ctx.shadowColor = 'rgba(220, 30, 40, 0.8)';
+				ctx.shadowBlur = 6;
+				ctx.fill();
+			}
+
+			requestAnimationFrame(animate);
+		}
+		animate();
+	</script>
 </body>
 </html>
