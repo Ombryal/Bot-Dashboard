@@ -9,6 +9,10 @@ const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
 
+// vercel (and most serverless hosts) sit behind a proxy - without this, express
+// can get confused about whether the connection is secure, which messes with cookies
+app.set('trust proxy', 1);
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
