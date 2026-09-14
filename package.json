@@ -1,0 +1,24 @@
+{
+  "name": "Zangetsu-dashboard",
+  "version": "0.1.0",
+  "description": "Web dashboard for configuring Zangetsu-bot's settings",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "@libsql/client": "^0.14.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
