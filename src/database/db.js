@@ -18,6 +18,19 @@ async function initDb() {
 			updated_at INTEGER
 		)
 	`);
+
+	// one on/off toggle per category card on the hub page. using "IF NOT EXISTS" on each
+	// so this stays safe to run every time, even on servers that already have these columns
+	const categoryColumns = [
+		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS mod_enabled INTEGER NOT NULL DEFAULT 1",
+		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS leveling_enabled INTEGER NOT NULL DEFAULT 1",
+		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS logging_enabled INTEGER NOT NULL DEFAULT 0",
+		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS utility_enabled INTEGER NOT NULL DEFAULT 1",
+	];
+
+	for (const sql of categoryColumns) {
+		await db.execute(sql);
+	}
 }
 
 module.exports = { db, initDb };
