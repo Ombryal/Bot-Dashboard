@@ -19,17 +19,26 @@ async function initDb() {
 		)
 	`);
 
-	// one on/off toggle per category card on the hub page. using "IF NOT EXISTS" on each
-	// so this stays safe to run every time, even on servers that already have these columns
+	// one on/off toggle per category card on the hub page. turso doesn't support
+	// "ADD COLUMN IF NOT EXISTS" like newer sqlite does, so instead we just try
+	// adding each one and quietly ignore the error if it's already there
 	const categoryColumns = [
-		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS mod_enabled INTEGER NOT NULL DEFAULT 1",
-		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS leveling_enabled INTEGER NOT NULL DEFAULT 1",
-		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS logging_enabled INTEGER NOT NULL DEFAULT 0",
-		"ALTER TABLE guild_settings ADD COLUMN IF NOT EXISTS utility_enabled INTEGER NOT NULL DEFAULT 1",
+		'ALTER TABLE guild_settings ADD COLUMN mod_enabled INTEGER NOT NULL DEFAULT 1',
+		'ALTER TABLE guild_settings ADD COLUMN leveling_enabled INTEGER NOT NULL DEFAULT 1',
+		'ALTER TABLE guild_settings ADD COLUMN logging_enabled INTEGER NOT NULL DEFAULT 0',
+		'ALTER TABLE guild_settings ADD COLUMN utility_enabled INTEGER NOT NULL DEFAULT 1',
 	];
 
 	for (const sql of categoryColumns) {
-		await db.execute(sql);
+		try {
+			await db.execute(sql);
+		} catch (error) {
+			// this specific error just means the column is already there from a
+			// previous run - totally fine, anything else we actually want to know about
+			if (!String(error.message).includes('duplicate column name')) {
+				throw error;
+			}
+		}
 	}
 }
 
