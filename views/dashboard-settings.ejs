@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><%= guild.name %> settings - nexus-bot</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+	<div class="container">
+		<p><a href="/dashboard">&larr; Back to servers</a></p>
+		<h1><%= guild.name %></h1>
+
+		<% if (typeof saved !== 'undefined') { %>
+			<p class="success-banner">Settings saved.</p>
+		<% } %>
+
+		<form method="POST" action="/dashboard/<%= guild.id %>">
+			<label for="warn_limit">Warning limit</label>
+			<p class="hint">How many warnings before something automatic happens.</p>
+			<input type="number" id="warn_limit" name="warn_limit" min="1" value="<%= settings.warn_limit %>">
+
+			<label for="warn_action">Action after limit is reached</label>
+			<select id="warn_action" name="warn_action">
+				<option value="none" <%= settings.warn_action === 'none' ? 'selected' : '' %>>Do nothing (just track it)</option>
+				<option value="timeout" <%= settings.warn_action === 'timeout' ? 'selected' : '' %>>Time out the member</option>
+				<option value="kick" <%= settings.warn_action === 'kick' ? 'selected' : '' %>>Kick the member</option>
+				<option value="ban" <%= settings.warn_action === 'ban' ? 'selected' : '' %>>Ban the member</option>
+			</select>
+
+			<label for="mod_log_channel_id">Mod-log channel ID</label>
+			<p class="hint">Right-click a channel in Discord (Developer Mode on) &rarr; Copy Channel ID.</p>
+			<input type="text" id="mod_log_channel_id" name="mod_log_channel_id" value="<%= settings.mod_log_channel_id || '' %>" placeholder="e.g. 1234567890123456">
+
+			<button type="submit">Save settings</button>
+		</form>
+	</div>
+</body>
+</html>
